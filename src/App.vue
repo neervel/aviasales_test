@@ -1,28 +1,45 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Flight v-for="(flight, i) in flights" :flight="flight" :key="`${flight.price}-${i}`"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Flight from "./components/Flight.vue";
+import axios from "axios";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Flight
+  },
+  data() {
+    return {
+      flights: []
+    }
+  },
+  methods: {
+    getFlights() {
+      axios.get("https://front-test.beta.aviasales.ru/tickets?searchId=3y1ud")
+        .then(response => this.flights = response.data.tickets)
+        .catch(error => console.error(error))
+    }
+  },
+  mounted() {
+    this.getFlights();
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+* {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  color: #4A4A4A;
+}
+body {
+  margin: 0;
+  background-color: #F3F7FA;
 }
 </style>
