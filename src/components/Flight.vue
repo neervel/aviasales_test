@@ -72,26 +72,29 @@ export default {
       return `${parseInt(time/60)}ч ${time % 60}м`
     },
     flightTime(time, duration) {
-      let depHours = +time.split('T')[1].split(':')[0];
-      let depMins = +time.split('T')[1].split(':')[1];
+      let depHours = time.split('T')[1].split(':')[0];
+      let depMins = time.split('T')[1].split(':')[1];
       let durHours = parseInt (duration / 60)
-      if (durHours + depHours >= 24) {durHours = (durHours + depHours) % 24}
+      if (+durHours + depHours >= 24) durHours = (+durHours + depHours) % 24
       let durMins = duration % 60
-      if (durMins + depMins >= 60) {
+      if (+durMins + depMins >= 60) {
         durHours += 1;
-        durMins = (durMins + depMins) % 60;
+        durMins = (+durMins + depMins) % 60;
       }
+      if (durHours.toString().length === 1) durHours = "0"+durHours
+      if (durMins.toString().length === 1) durMins = "0"+durMins
       return `${depHours}:${depMins} - ${durHours}:${durMins}`
     }
   },
 };
 </script>
 
-<style>
+<style scoped>
 .flight {
   width: 500px;
   border-radius: 5px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
   padding: 20px;
   margin-bottom: 20px;
   display: grid;

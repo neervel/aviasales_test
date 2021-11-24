@@ -1,17 +1,30 @@
 <template>
   <div id="app">
-    <Flight v-for="(flight, i) in flights" :flight="flight" :key="`${flight.price}-${i}`"/>
+    <img src="./assets/logo.svg" class="logo">
+    <div class="search">
+      <div class="filter">
+        <MyFilter />
+      </div>
+      <div class="search-loading" v-if="flights.length === 0">
+        Loading...
+      </div>
+      <div class="flights" v-else>
+        <Flight v-for="(flight, i) in flights" :flight="flight" :key="`${flight.price}-${i}`"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Flight from "./components/Flight.vue";
+import MyFilter from "./components/MyFilter.vue";
 import axios from "axios";
 
 export default {
   name: 'App',
   components: {
-    Flight
+    Flight,
+    MyFilter,
   },
   data() {
     return {
@@ -20,9 +33,15 @@ export default {
   },
   methods: {
     getFlights() {
-      axios.get("https://front-test.beta.aviasales.ru/tickets?searchId=3y1ud")
-        .then(response => this.flights = response.data.tickets)
-        .catch(error => console.error(error))
+      let searchId = "";
+      axios.get("https://front-test.beta.aviasales.ru/search")
+        .then(response => {
+          searchId = response.data.searchId
+          axios.get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`)
+            .then(response => this.flights = response.data.tickets)
+            .catch(error => console.log(error))
+        })
+        
     }
   },
   mounted() {
@@ -41,5 +60,22 @@ export default {
 body {
   margin: 0;
   background-color: #F3F7FA;
+}
+.logo {
+  display: block;
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 100px;
+  width: 100px;
+}
+.search {
+  display: grid;
+  grid-template-columns: 230px 500px;
+  margin: 50px auto;
+  grid-gap: 20px;
+  justify-content: center;
+}
+.flights {
+  grid-column: 2;
 }
 </style>
