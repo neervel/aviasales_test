@@ -50,7 +50,9 @@ export default {
     flightFrom() {
       return this.flight.segments[1]
     },
-    
+    totalFlightDuration() {
+      return +this.flightTo.duration + this.flightFrom.duration;
+    }
   },
   filters: {
     setSpace: function (value) {
@@ -91,7 +93,7 @@ export default {
 
 <style scoped>
 .flight {
-  width: 500px;
+  width: 100%;
   border-radius: 5px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -101,6 +103,11 @@ export default {
   grid-gap: 20px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
+  transition: .2s;
+}
+.flight:hover {
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 .flight-price {
   color: #2196f3;
