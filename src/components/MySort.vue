@@ -1,22 +1,24 @@
 <template>
   <div class="sort">
-    <button class="sort-btn active" @click="setSort('cheap')">Самый дешевый</button>
-    <button class="sort-btn" @click="setSort('fast')">Самый быстрый</button>
+    <button class="sort-btn" :class="{active: sortType === 'cheap'}" @click="setSort('cheap')">Самый дешевый</button>
+    <button class="sort-btn" :class="{active: sortType === 'fast'}" @click="setSort('fast')">Самый быстрый</button>
   </div>
 </template>
 
 <script>
 export default {
   name: "MySort",
+  data() {
+    return{
+      sortType: "cheap",
+    }
+  },
   methods: {
     setSort(arg) {
-      const btnList = document.getElementsByClassName("sort-btn")
-      for (var i = 0; i < btnList.length; i++) {
-        document.getElementsByClassName("sort-btn")[i].classList.toggle("active")
-      }
-      this.$emit("setSort", arg)
+      this.sortType = arg;
+      this.$emit("setSort", this.sortType)
     }
-  }
+  },
 }
 </script>
 

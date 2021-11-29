@@ -118,6 +118,10 @@ body {
   grid-gap: 20px;
   justify-content: center;
 }
+.search-loading {
+  grid-column: 2;
+}
+
 .flights {
   grid-column: 2;
 }
